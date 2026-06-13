@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corridor Hill — Ecosystem Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════
+   DESIGN TOKENS — Corridor Hill Ecosystem
+   Dark Slate Corporate + Status Accent System
+══════════════════════════════════════════════ */
+:root {
+  /* Backgrounds */
+  --bg-base:    #09090b;
+  --bg-surface: #111113;
+  --bg-card:    #18181b;
+  --bg-raised:  #1f1f23;
+  --bg-hover:   #27272a;
+  --bg-active:  #2d2d32;
+  /* Borders */
+  --border-dim:  rgba(255,255,255,0.06);
+  --border-mid:  rgba(255,255,255,0.10);
+  --border-hi:   rgba(255,255,255,0.16);
+  /* Text */
+  --text-primary:   #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-tertiary:  #71717a;
+  --text-disabled:  #52525b;
+  /* Status — Emerald */
+  --emerald:      #10b981;
+  --emerald-dim:  rgba(16,185,129,0.15);
+  --emerald-ring: rgba(16,185,129,0.35);
+  /* Status — Amber */
+  --amber:      #f59e0b;
+  --amber-dim:  rgba(245,158,11,0.15);
+  --amber-ring: rgba(245,158,11,0.35);
+  /* Status — Blue */
+  --blue:      #3b82f6;
+  --blue-dim:  rgba(59,130,246,0.15);
+  --blue-ring: rgba(59,130,246,0.35);
+  /* Status — Rose */
+  --rose:      #f43f5e;
+  --rose-dim:  rgba(244,63,94,0.12);
+  /* Status — Violet */
+  --violet:    #8b5cf6;
+  --violet-dim:rgba(139,92,246,0.15);
+  /* Sidebar */
+  --sidebar-w: 240px;
+  /* Radius */
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg-active); border-radius: 99px; }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+/* ══════════════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════════════ */
+.sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border-dim);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0; top: 0;
+  z-index: 50;
+  overflow-y: auto;
+}
+.sidebar-brand {
+  padding: 20px 16px 16px;
+  border-bottom: 1px solid var(--border-dim);
+  display: flex; align-items: center; gap: 10px;
+}
+.sidebar-logo {
+  width: 32px; height: 32px; border-radius: var(--r-md);
+  background: linear-gradient(135deg, var(--blue) 0%, var(--violet) 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.sidebar-brand-text { line-height: 1.2; }
+.sidebar-brand-name { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.sidebar-brand-sub { font-size: 10px; color: var(--text-tertiary); letter-spacing: 0.08em; text-transform: uppercase; }
+.sidebar-section { padding: 12px 8px 4px; }
+.sidebar-section-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-disabled);
+  padding: 0 8px; margin-bottom: 4px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: var(--r-md);
+  cursor: pointer; transition: background 0.15s, color 0.15s;
+  color: var(--text-secondary); font-size: 13px; font-weight: 500;
+  margin-bottom: 1px; position: relative;
+  border: 1px solid transparent;
+}
+.nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+.nav-item.active {
+  background: var(--bg-active); color: var(--text-primary);
+  border-color: var(--border-mid);
+}
+.nav-item .nav-icon { font-size: 15px; flex-shrink: 0; width: 20px; text-align: center; }
+.nav-item .nav-badge {
+  margin-left: auto; font-size: 10px; font-weight: 700;
+  background: var(--blue-dim); color: var(--blue);
+  padding: 2px 6px; border-radius: 99px; border: 1px solid var(--blue-ring);
+}
+.nav-item .tier-tag {
+  margin-left: auto; font-size: 9px; font-weight: 700;
+  padding: 2px 5px; border-radius: 3px; letter-spacing: 0.05em; text-transform: uppercase;
+}
+.tier-std { background: var(--emerald-dim); color: var(--emerald); border: 1px solid var(--emerald-ring); }
+.tier-prm { background: var(--violet-dim); color: var(--violet); border: 1px solid rgba(139,92,246,0.35); }
+
+.sidebar-footer {
+  margin-top: auto; padding: 12px 8px;
+  border-top: 1px solid var(--border-dim);
+}
+.admin-chip {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px; border-radius: var(--r-md);
+  background: var(--bg-raised);
+}
+.admin-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.admin-info { line-height: 1.3; }
+.admin-name { font-size: 12px; font-weight: 600; }
+.admin-role { font-size: 10px; color: var(--text-tertiary); }
+
+/* ══════════════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════════════ */
+.main-wrap {
+  margin-left: var(--sidebar-w);
+  flex: 1; display: flex; flex-direction: column;
+  height: 100vh; overflow: hidden;
+}
+.topbar {
+  height: 52px; min-height: 52px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-dim);
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 12px;
+}
+.topbar-breadcrumb {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--text-tertiary);
+}
+.topbar-breadcrumb .sep { color: var(--text-disabled); }
+.topbar-breadcrumb .current { color: var(--text-primary); font-weight: 600; }
+.topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.topbar-chip {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 10px; border-radius: var(--r-md);
+  background: var(--bg-raised); border: 1px solid var(--border-dim);
+  font-size: 11px; color: var(--text-secondary);
+}
+.topbar-chip .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--emerald);
+  box-shadow: 0 0 6px var(--emerald);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:0.6;transform:scale(0.8)}
+}
+
+.content-area {
+  flex: 1; overflow-y: auto; padding: 24px;
+}
+.view { display: none; }
+.view.active { display: block; animation: fadeSlide 0.2s ease; }
+@keyframes fadeSlide {
+  from { opacity:0; transform: translateY(4px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════════════════
+   SHARED COMPONENTS
+══════════════════════════════════════════════ */
+.page-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; margin-bottom: 24px;
+  gap: 16px;
+}
+.page-title { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+.page-sub { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 8px; border-radius: 99px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+}
+.badge-emerald { background: var(--emerald-dim); color: var(--emerald); border: 1px solid var(--emerald-ring); }
+.badge-amber   { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-ring); }
+.badge-blue    { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue-ring); }
+.badge-rose    { background: var(--rose-dim); color: var(--rose); border: 1px solid rgba(244,63,94,0.3); }
+.badge-violet  { background: var(--violet-dim); color: var(--violet); border: 1px solid rgba(139,92,246,0.35); }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--r-lg);
+  padding: 16px;
+}
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.card-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.card-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+.input-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+.input-label {
+  font-size: 11px; font-weight: 600; color: var(--text-secondary);
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.input-field {
+  background: var(--bg-raised); border: 1px solid var(--border-mid);
+  color: var(--text-primary); padding: 9px 12px;
+  border-radius: var(--r-md); font-size: 13px; font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+  width: 100%;
+}
+.input-field:focus { outline: none; border-color: var(--blue); background: var(--bg-active); }
+.input-field::placeholder { color: var(--text-disabled); }
+.input-field.masked { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 8px 16px; border-radius: var(--r-md);
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; border: 1px solid transparent;
+}
+.btn-primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+.btn-primary:hover { background: #2563eb; }
+.btn-emerald { background: var(--emerald); color: #fff; border-color: var(--emerald); }
+.btn-emerald:hover { background: #059669; }
+.btn-amber { background: var(--amber); color: #000; border-color: var(--amber); }
+.btn-amber:hover { background: #d97706; }
+.btn-ghost {
+  background: transparent; color: var(--text-secondary);
+  border-color: var(--border-mid);
+}
+.btn-ghost:hover { background: var(--bg-hover); color: var(--text-primary); }
+.btn-danger { background: var(--rose-dim); color: var(--rose); border-color: rgba(244,63,94,0.3); }
+.btn-danger:hover { background: rgba(244,63,94,0.22); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-sm { padding: 5px 11px; font-size: 12px; }
+
+.divider { height: 1px; background: var(--border-dim); margin: 16px 0; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+
+/* ══════════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════════ */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--bg-card); border: 1px solid var(--border-hi);
+  border-radius: var(--r-lg); padding: 28px;
+  max-width: 520px; width: 100%;
+  animation: modalIn 0.2s ease;
+  position: relative;
+}
+@keyframes modalIn {
+  from { opacity:0; transform: scale(0.96) translateY(8px); }
+  to   { opacity:1; transform: scale(1) translateY(0); }
+}
+.modal-close {
+  position: absolute; top: 14px; right: 14px;
+  background: var(--bg-hover); border: 1px solid var(--border-dim);
+  color: var(--text-secondary); width: 28px; height: 28px;
+  border-radius: var(--r-md); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; transition: all 0.15s;
+}
+.modal-close:hover { background: var(--bg-active); color: var(--text-primary); }
+.modal-icon { font-size: 40px; text-align: center; margin-bottom: 12px; }
+.modal-title { font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 6px; }
+.modal-sub { font-size: 13px; color: var(--text-secondary); text-align: center; line-height: 1.6; }
+.modal-ref {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  background: var(--bg-raised); border: 1px solid var(--border-mid);
+  padding: 10px 14px; border-radius: var(--r-md); margin: 14px 0;
+  color: var(--blue); letter-spacing: 0.08em;
+}
+.modal-detail-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border-dim);
+  font-size: 13px;
+}
+.modal-detail-row:last-child { border-bottom: none; }
+.modal-detail-key { color: var(--text-secondary); }
+.modal-detail-val { font-weight: 600; }
+
+/* ══════════════════════════════════════════════
+   VIEW 1 — STUDENT INTAKE
+══════════════════════════════════════════════ */
+.intake-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr 300px;
+  gap: 16px;
+  align-items: start;
+}
+.funding-toggle { display: flex; flex-direction: column; gap: 6px; }
+.funding-option {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-radius: var(--r-md);
+  border: 1px solid var(--border-mid); cursor: pointer;
+  background: var(--bg-raised); transition: all 0.15s;
+}
+.funding-option:hover { border-color: var(--blue); background: var(--bg-active); }
+.funding-option.selected { border-color: var(--blue); background: var(--blue-dim); }
+.funding-option .fo-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid var(--border-hi); flex-shrink: 0; transition: all 0.15s;
+}
+.funding-option.selected .fo-dot { background: var(--blue); border-color: var(--blue); box-shadow: 0 0 8px var(--blue-ring); }
+.funding-option .fo-label { font-size: 12px; font-weight: 500; }
+.funding-option .fo-sub { font-size: 10px; color: var(--text-tertiary); margin-top: 1px; }
+
+.block-tabs {
+  display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap;
+}
+.block-tab {
+  padding: 7px 18px; border-radius: var(--r-md);
+  border: 1px solid var(--border-mid); background: var(--bg-raised);
+  color: var(--text-secondary); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+}
+.block-tab:hover { border-color: var(--blue-ring); color: var(--text-primary); background: var(--bg-active); }
+.block-tab.active { background: var(--blue-dim); border-color: var(--blue); color: var(--blue); }
+
+.unit-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 8px; margin-bottom: 16px;
+}
+.unit-card {
+  aspect-ratio: 1; border-radius: var(--r-md);
+  border: 1px solid var(--border-dim); background: var(--bg-raised);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.15s;
+  font-size: 13px; font-weight: 600; gap: 3px;
+}
+.unit-card:hover { border-color: var(--blue-ring); background: var(--bg-active); }
+.unit-card.selected { border-color: var(--blue); background: var(--blue-dim); color: var(--blue); }
+.unit-card .uc-label { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; }
+.unit-card .uc-sub { font-size: 9px; color: var(--text-tertiary); }
+.unit-card.selected .uc-sub { color: var(--blue); opacity: 0.7; }
+
+/* Cluster Map */
+.cluster-map {
+  border: 1px solid var(--border-mid); border-radius: var(--r-lg);
+  padding: 16px; background: var(--bg-raised); position: relative;
+}
+.cluster-label {
+  text-align: center; font-size: 10px; font-weight: 600;
+  color: var(--text-disabled); text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+.cluster-visual {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px; position: relative;
+}
+.cluster-room {
+  border: 1.5px solid var(--border-mid); border-radius: var(--r-md);
+  padding: 12px 8px; text-align: center; cursor: pointer;
+  transition: all 0.18s; position: relative;
+  min-height: 90px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4px;
+}
+.cluster-room .cr-letter {
+  font-size: 20px; font-weight: 800; line-height: 1;
+  letter-spacing: -0.03em;
+}
+.cluster-room .cr-label { font-size: 10px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.cluster-room .cr-status { font-size: 9px; margin-top: 2px; font-weight: 500; }
+/* Available */
+.cluster-room.avail {
+  border-color: var(--emerald-ring); background: var(--emerald-dim);
+  color: var(--emerald);
+}
+.cluster-room.avail:hover {
+  background: rgba(16,185,129,0.22); box-shadow: 0 0 0 1px var(--emerald-ring);
+}
+/* Occupied */
+.cluster-room.occupied {
+  border-color: rgba(245,158,11,0.3); background: var(--amber-dim);
+  color: var(--amber); cursor: not-allowed;
+}
+/* Selected */
+.cluster-room.selected {
+  border-color: var(--blue); background: var(--blue-dim);
+  color: var(--blue); box-shadow: 0 0 0 1px var(--blue);
+}
+.cluster-common {
+  margin-top: 8px; text-align: center;
+  background: var(--bg-active); border: 1px dashed var(--border-mid);
+  border-radius: var(--r-md); padding: 6px;
+  font-size: 10px; color: var(--text-disabled); letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Selection Summary */
+.summary-card {
+  border: 1px solid var(--border-mid); border-radius: var(--r-lg);
+  padding: 16px; background: var(--bg-raised);
+}
+.summary-path {
+  display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
+  margin: 10px 0; font-size: 13px;
+}
+.summary-crumb {
+  background: var(--bg-active); border: 1px solid var(--border-mid);
+  padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 600;
+}
+.summary-arrow { color: var(--text-disabled); font-size: 11px; }
+.summary-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 12px; border-bottom: 1px solid var(--border-dim); }
+.summary-row:last-child { border-bottom: none; }
+.summary-row .sk { color: var(--text-secondary); }
+.summary-row .sv { font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+.summary-row .sv.masked { letter-spacing: 0.1em; }
+
+/* ══════════════════════════════════════════════
+   VIEW 2 — BIOMETRIC HUB
+══════════════════════════════════════════════ */
+.biometric-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+
+.camera-viewport {
+  aspect-ratio: 3/4; max-height: 400px;
+  border-radius: var(--r-lg); border: 1px solid var(--border-mid);
+  background: #050508;
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.camera-frame {
+  position: absolute; inset: 20px;
+  border: 2px solid rgba(59,130,246,0.3);
+  border-radius: var(--r-lg);
+}
+.camera-corner {
+  position: absolute; width: 20px; height: 20px;
+  border-color: var(--blue); border-style: solid;
+}
+.camera-corner.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; border-radius: 4px 0 0 0; }
+.camera-corner.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; border-radius: 0 4px 0 0; }
+.camera-corner.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; border-radius: 0 0 0 4px; }
+.camera-corner.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; border-radius: 0 0 4px 0; }
+.scan-reticle {
+  width: 120px; height: 120px; border-radius: 50%;
+  border: 2px solid rgba(59,130,246,0.4);
+  position: relative; display: flex; align-items: center; justify-content: center;
+}
+.scan-icon { font-size: 40px; opacity: 0.3; }
+.scan-pulse-ring {
+  position: absolute; inset: -12px; border-radius: 50%;
+  border: 2px solid var(--blue); opacity: 0;
+  animation: scanRing 2.5s ease-in-out infinite;
+}
+.scan-pulse-ring:nth-child(2) { animation-delay: 0.8s; }
+@keyframes scanRing {
+  0%   { transform: scale(0.85); opacity: 0.6; }
+  100% { transform: scale(1.4);  opacity: 0; }
+}
+.scan-line {
+  position: absolute; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  top: 50%; animation: scanLine 1.8s ease-in-out infinite;
+  display: none;
+}
+@keyframes scanLine {
+  0%   { top: 15%; opacity: 1; }
+  100% { top: 85%; opacity: 0.2; }
+}
+.camera-label {
+  position: absolute; bottom: 16px; left: 0; right: 0;
+  text-align: center; font-size: 11px; color: rgba(255,255,255,0.4);
+  font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em;
+}
+.scan-status-bar {
+  position: absolute; top: 16px; left: 16px; right: 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.scan-status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--rose); display: flex; align-items: center; gap: 5px;
+}
+.scan-status-txt { font-size: 10px; color: rgba(255,255,255,0.4); font-family: 'JetBrains Mono', monospace; }
+
+.scan-success-overlay {
+  display: none; position: absolute; inset: 0;
+  background: rgba(5,5,8,0.9); border-radius: var(--r-lg);
+  align-items: center; justify-content: center; flex-direction: column;
+  gap: 10px; text-align: center; padding: 20px;
+}
+.scan-success-overlay.show { display: flex; animation: fadeSlide 0.3s ease; }
+.scan-check { font-size: 48px; }
+.scan-success-title { font-size: 14px; font-weight: 700; color: var(--emerald); }
+.scan-success-sub { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+
+/* Calendar */
+.appt-calendar { }
+.cal-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.cal-month { font-size: 13px; font-weight: 700; }
+.cal-nav { background: var(--bg-active); border: 1px solid var(--border-dim); color: var(--text-secondary); width: 26px; height: 26px; border-radius: var(--r-sm); cursor: pointer; font-size: 12px; display:flex; align-items:center; justify-content:center; transition: all 0.15s; }
+.cal-nav:hover { color: var(--text-primary); border-color: var(--border-hi); }
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; }
+.cal-day-header { text-align: center; font-size: 10px; color: var(--text-disabled); font-weight: 600; padding: 4px 0; }
+.cal-day {
+  aspect-ratio: 1; border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--text-secondary);
+  cursor: pointer; transition: all 0.12s; border: 1px solid transparent;
+}
+.cal-day:hover:not(.empty):not(.past) { background: var(--bg-active); color: var(--text-primary); }
+.cal-day.today { border-color: var(--blue); color: var(--blue); font-weight: 700; }
+.cal-day.selected { background: var(--blue); color: #fff; border-color: var(--blue); font-weight: 700; }
+.cal-day.past { color: var(--text-disabled); cursor: not-allowed; }
+.cal-day.empty { cursor: default; }
+.cal-day.booked { background: var(--emerald-dim); color: var(--emerald); border-color: var(--emerald-ring); }
+
+.time-slots { margin-top: 10px; }
+.time-slots-header { font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+.time-slot-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 5px; }
+.time-slot {
+  padding: 5px; text-align: center; border-radius: var(--r-sm);
+  border: 1px solid var(--border-dim); font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  cursor: pointer; transition: all 0.12s; color: var(--text-secondary); background: var(--bg-raised);
+}
+.time-slot:hover { border-color: var(--blue-ring); color: var(--blue); }
+.time-slot.taken { color: var(--text-disabled); cursor: not-allowed; background: var(--bg-card); border-color: transparent; }
+.time-slot.selected { background: var(--blue-dim); border-color: var(--blue); color: var(--blue); font-weight: 700; }
+
+/* ══════════════════════════════════════════════
+   VIEW 3 — PASS TRACKER
+══════════════════════════════════════════════ */
+.pass-layout { display: grid; grid-template-columns: 320px 1fr; gap: 16px; align-items: start; }
+
+.manifest-table-wrap { overflow-x: auto; }
+.manifest-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.manifest-table th {
+  text-align: left; padding: 8px 12px;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-dim); white-space: nowrap;
+}
+.manifest-table td { padding: 10px 12px; border-bottom: 1px solid var(--border-dim); color: var(--text-secondary); vertical-align: middle; }
+.manifest-table tr:last-child td { border-bottom: none; }
+.manifest-table tr:hover td { background: var(--bg-hover); }
+.manifest-table td .student-name { font-weight: 600; color: var(--text-primary); font-size: 13px; }
+.manifest-table td .student-id { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-tertiary); }
+
+.search-bar-wrap { position: relative; margin-bottom: 12px; }
+.search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--text-disabled); pointer-events: none; }
+.search-input {
+  background: var(--bg-raised); border: 1px solid var(--border-mid);
+  color: var(--text-primary); padding: 8px 12px 8px 32px;
+  border-radius: var(--r-md); font-size: 13px; font-family: inherit;
+  width: 100%; transition: border-color 0.15s;
+}
+.search-input:focus { outline: none; border-color: var(--blue); }
+.filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.filter-chip {
+  padding: 4px 12px; border-radius: 99px;
+  border: 1px solid var(--border-dim); font-size: 11px; font-weight: 500;
+  cursor: pointer; transition: all 0.12s; color: var(--text-secondary); background: var(--bg-raised);
+}
+.filter-chip:hover { border-color: var(--blue-ring); color: var(--blue); }
+.filter-chip.active { background: var(--blue-dim); border-color: var(--blue); color: var(--blue); }
+
+.stats-strip { display: flex; gap: 10px; margin-bottom: 16px; }
+.stat-tile {
+  flex: 1; background: var(--bg-raised); border: 1px solid var(--border-dim);
+  border-radius: var(--r-md); padding: 10px 14px;
+}
+.stat-tile .st-val { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+.stat-tile .st-label { font-size: 10px; color: var(--text-tertiary); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ══════════════════════════════════════════════
+   VIEW 4 — MOVE-OUT INSPECTION
+══════════════════════════════════════════════ */
+.inspection-layout { max-width: 700px; }
+
+.wizard-header {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 20px;
+  padding-bottom: 16px; border-bottom: 1px solid var(--border-dim);
+}
+.wizard-step {
+  display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1.5px solid var(--border-mid); font-size: 12px; font-weight: 700;
+  color: var(--text-disabled); flex-shrink: 0; transition: all 0.2s;
+}
+.wizard-step.done { background: var(--emerald); border-color: var(--emerald); color: #fff; }
+.wizard-step.current { background: var(--blue-dim); border-color: var(--blue); color: var(--blue); }
+.wizard-step-label { font-size: 11px; color: var(--text-tertiary); flex-shrink: 0; }
+.wizard-connector { flex: 1; height: 1px; background: var(--border-dim); }
+.wizard-connector.done { background: var(--emerald); }
+
+.audit-section { margin-bottom: 20px; }
+.audit-section-header {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-secondary);
+  margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+}
+.audit-section-header::after { content: ''; flex: 1; height: 1px; background: var(--border-dim); }
+
+.audit-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; border-radius: var(--r-md); border: 1px solid var(--border-dim);
+  background: var(--bg-raised); margin-bottom: 6px;
+  transition: border-color 0.15s;
+}
+.audit-item .ai-name { font-size: 13px; font-weight: 500; }
+.audit-item .ai-note { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+.condition-toggle { display: flex; gap: 6px; }
+.cond-btn {
+  padding: 4px 10px; border-radius: var(--r-sm);
+  font-size: 11px; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--border-dim); background: var(--bg-active);
+  color: var(--text-disabled); transition: all 0.12s;
+}
+.cond-btn:hover { color: var(--text-secondary); }
+.cond-btn.good { background: var(--emerald-dim); border-color: var(--emerald-ring); color: var(--emerald); }
+.cond-btn.damaged { background: var(--rose-dim); border-color: rgba(244,63,94,0.3); color: var(--rose); }
+
+.inspector-notes { margin-bottom: 16px; }
+.photo-strip { display: flex; gap: 8px; margin-bottom: 12px; }
+.photo-placeholder {
+  width: 60px; height: 60px; border-radius: var(--r-md);
+  border: 1.5px dashed var(--border-mid); background: var(--bg-raised);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; cursor: pointer; transition: all 0.15s; color: var(--text-disabled);
+}
+.photo-placeholder:hover { border-color: var(--blue-ring); color: var(--blue); }
+
+/* Report Modal */
+.report-header { text-align: center; padding: 16px 0; border-bottom: 1px solid var(--border-dim); margin-bottom: 16px; }
+.report-logo { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); }
+.report-title { font-size: 16px; font-weight: 700; margin: 6px 0 3px; }
+.report-meta { font-size: 11px; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
+.report-section { margin-bottom: 12px; }
+.report-section-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-tertiary); margin-bottom: 6px; }
+.report-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-dim); font-size: 12px; }
+.report-item:last-child { border-bottom: none; }
+.report-item .ri-key { color: var(--text-secondary); }
+.report-score { text-align: center; padding: 12px; background: var(--bg-raised); border-radius: var(--r-md); border: 1px solid var(--border-mid); margin: 12px 0; }
+.report-score-num { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; }
+.report-score-label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+.toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 300; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+.toast {
+  background: var(--bg-card); border: 1px solid var(--border-hi);
+  padding: 12px 16px; border-radius: var(--r-lg);
+  font-size: 13px; display: flex; align-items: center; gap: 10px;
+  min-width: 260px; pointer-events: auto;
+  animation: toastIn 0.25s ease;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+@keyframes toastIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.toast .t-icon { font-size: 16px; }
+.toast .t-text { font-weight: 500; }
+.toast .t-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 1px; }
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .intake-layout { grid-template-columns: 260px 1fr; }
+  .intake-layout > :last-child { grid-column: 1 / -1; }
+}
+@media (max-width: 900px) {
+  :root { --sidebar-w: 200px; }
+  .intake-layout { grid-template-columns: 1fr; }
+  .biometric-layout { grid-template-columns: 1fr; }
+  .pass-layout { grid-template-columns: 1fr; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  :root { --sidebar-w: 0px; }
+  .sidebar { display: none; }
+  .main-wrap { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<Abody>
+
+<!-- ════════════════════════════════════ SIDEBAR ════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="sidebar-logo">CH</div>
+    <div class="sidebar-brand-text">
+      <div class="sidebar-brand-name">Corridor Hill</div>
+      <div class="sidebar-brand-sub">Ecosystem v2.4</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Student Portal</div>
+    <div class="nav-item active" data-view="intake" onclick="setView('intake',this)">
+      <span class="nav-icon">🏠</span> Room Intake
+      <span class="tier-tag tier-std">STD</span>
+    </div>
+    <div class="nav-item" data-view="biometric" onclick="setView('biometric',this)">
+      <span class="nav-icon">🪪</span> Biometric Hub
+      <span class="tier-tag tier-std">STD</span>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Administration</div>
+    <div class="nav-item" data-view="passes" onclick="setView('passes',this)">
+      <span class="nav-icon">🌙</span> Pass Tracker
+      <span class="nav-badge" id="badge-out">0</span>
+    </div>
+    <div class="nav-item" data-view="inspection" onclick="setView('inspection',this)">
+      <span class="nav-icon">🔍</span> Move-Out Audit
+      <span class="tier-tag tier-prm">PRO</span>
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="admin-chip">
+      <div class="admin-avatar">SA</div>
+      <div class="admin-info">
+        <div class="admin-name">Site Admin</div>
+        <div class="admin-role">Corridor Hill eMalahleni</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ════════════════════════════════════ MAIN ════ -->
+<div class="main-wrap">
+  <header class="topbar">
+    <div class="topbar-breadcrumb">
+      <span>Corridor Hill</span>
+      <span class="sep">›</span>
+      <span class="current" id="topbar-crumb">Room Intake</span>
+    </div>
+    <div class="topbar-actions">
+      <div class="topbar-chip">
+        <div class="dot"></div>
+        System Online
+      </div>
+      <div class="topbar-chip">🏢 Blocks A B C D E F</div>
+    </div>
+  </header>
+
+  <div class="content-area">
+
+    <!-- ══════════════ VIEW 1 — STUDENT INTAKE ══════════════ -->
+    <div class="view active" id="view-intake">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Student Room Intake</div>
+          <div class="page-sub">Register a student, choose a block, unit, and room cluster assignment.</div>
+        </div>
+        <span class="badge badge-emerald">● Standard Tier</span>
+      </div>
+
+      <div class="intake-layout">
+        <!-- LEFT: Student Form -->
+        <div>
+          <div class="card" style="margin-bottom:14px">
+            <div class="card-header"><div><div class="card-title">Student Profile</div><div class="card-sub">Personal &amp; academic details</div></div></div>
+
+            <div class="input-group">
+              <label class="input-label">Full Name</label>
+              <input class="input-field" id="stu-name" placeholder="e.g. Sipho Dlamini" oninput="sanitizeInput(this); updateSummary()">
+            </div>
+            <div class="input-group">
+              <label class="input-label">Student Number</label>
+              <input class="input-field" id="stu-num" placeholder="e.g. STU2024001234" maxlength="16" oninput="sanitizeInput(this); updateSummary()">
+            </div>
+            <div class="input-group">
+              <label class="input-label">SA ID Number (13 digits) <span style="color:var(--text-disabled);font-size:10px">POPIA masked</span></label>
+              <input class="input-field masked" id="stu-id" placeholder="0001015009087" maxlength="13" oninput="sanitizeIDInput(this); updateSummary()">
+              <div id="stu-id-masked" style="font-size:10px;color:var(--text-tertiary);font-family:'JetBrains Mono',monospace;margin-top:3px;min-height:16px;letter-spacing:0.1em"></div>
+            </div>
+
+            <div class="divider"></div>
+            <div class="input-label" style="margin-bottom:8px">Funding Status</div>
+            <div class="funding-toggle" id="funding-toggle">
+              <div class="funding-option selected" data-fund="NSFAS" onclick="selectFunding(this)">
+                <div class="fo-dot"></div>
+                <div><div class="fo-label">NSFAS</div><div class="fo-sub">National Student Financial Aid</div></div>
+              </div>
+              <div class="funding-option" data-fund="Private" onclick="selectFunding(this)">
+                <div class="fo-dot"></div>
+                <div><div class="fo-label">Private Paying</div><div class="fo-sub">Self / family funded</div></div>
+              </div>
+              <div class="funding-option" data-fund="Bursary" onclick="selectFunding(this)">
+                <div class="fo-dot"></div>
+                <div><div class="fo-label">External Bursary</div><div class="fo-sub">Employer / scholarship</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MIDDLE: Block → Unit → Cluster -->
+        <div>
+          <div class="card" style="margin-bottom:14px">
+            <div class="card-header"><div><div class="card-title">Block Selection</div></div></div>
+            <div class="block-tabs" id="block-tabs">
+              <div class="block-tab" data-block="A" onclick="selectBlock('A',this)">Block A</div>
+              <div class="block-tab" data-block="B" onclick="selectBlock('B',this)">Block B</div>
+              <div class="block-tab" data-block="C" onclick="selectBlock('C',this)">Block C</div>
+              <div class="block-tab" data-block="D" onclick="selectBlock('D',this)">Block D</div>
+              <div class="block-tab" data-block="E" onclick="selectBlock('E',this)">Block E</div>
+              <div class="block-tab" data-block="F" onclick="selectBlock('F',this)">Block F</div>
+            </div>
+            <div id="unit-grid-wrap" style="display:none">
+              <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px" id="unit-section-label">Select a unit in Block —</div>
+              <div class="unit-grid" id="unit-grid"></div>
+            </div>
+            <div id="cluster-wrap" style="display:none">
+              <div class="divider"></div>
+              <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:8px" id="cluster-label">Cluster map — Unit —</div>
+              <div class="cluster-map">
+                <div class="cluster-label">3-Room Cluster · Shared Common Walkway</div>
+                <div class="cluster-visual" id="cluster-rooms"></div>
+                <div class="cluster-common">↕ Shared Common Area / Walkway ↕</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Selection Summary -->
+        <div>
+          <div class="summary-card">
+            <div class="card-title">Selection Summary</div>
+            <div style="font-size:11px;color:var(--text-tertiary);margin-top:3px">Live allocation path</div>
+            <div class="summary-path" id="summary-path">
+              <span class="summary-crumb" style="color:var(--text-disabled)">No block selected</span>
+            </div>
+            <div class="divider"></div>
+            <div class="summary-row"><span class="sk">Student</span><span class="sv masked" id="sum-name">—</span></div>
+            <div class="summary-row"><span class="sk">Student No.</span><span class="sv masked" id="sum-studnum">—</span></div>
+            <div class="summary-row"><span class="sk">SA ID</span><span class="sv masked" id="sum-id">—</span></div>
+            <div class="summary-row"><span class="sk">Funding</span><span class="sv" id="sum-funding">NSFAS</span></div>
+            <div class="summary-row"><span class="sk">Block</span><span class="sv" id="sum-block">—</span></div>
+            <div class="summary-row"><span class="sk">Unit</span><span class="sv" id="sum-unit">—</span></div>
+            <div class="summary-row"><span class="sk">Room</span><span class="sv" id="sum-room">—</span></div>
+            <div class="summary-row"><span class="sk">Status</span><span class="sv" id="sum-status"><span class="badge badge-amber">Pending</span></span></div>
+            <div class="divider"></div>
+            <button class="btn btn-emerald" style="width:100%" id="confirm-btn" onclick="openConfirmModal()" disabled>
+              ✓ Confirm Bed Selection
+            </button>
+            <div style="font-size:10px;color:var(--text-disabled);text-align:center;margin-top:8px">All fields must be completed</div>
+          </div>
+        </div>
+
+      </div><!-- /intake-layout -->
+    </div><!-- /view-intake -->
+
+    <!-- ══════════════ VIEW 2 — BIOMETRIC ══════════════ -->
+    <div class="view" id="view-biometric">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Face-Biometric Registration Hub</div>
+          <div class="page-sub">3D liveness detection &amp; access gate sync. Fallback appointment booking below.</div>
+        </div>
+        <span class="badge badge-blue">● Biometric Active</span>
+      </div>
+      <div class="biometric-layout">
+        <!-- Camera side -->
+        <div>
+          <div class="card" style="margin-bottom:14px">
+            <div class="card-header"><div class="card-title">Facial Template Capture</div></div>
+            <div class="camera-viewport" id="camera-viewport">
+              <div class="scan-status-bar">
+                <div class="scan-status-dot" id="cam-status-dot"></div>
+                <span class="scan-status-txt" id="cam-status-txt">STANDBY</span>
+              </div>
+              <div class="camera-frame">
+                <div class="camera-corner tl"></div>
+                <div class="camera-corner tr"></div>
+                <div class="camera-corner bl"></div>
+                <div class="camera-corner br"></div>
+                <div class="scan-line" id="scan-line"></div>
+              </div>
+              <div class="scan-reticle" id="scan-reticle">
+                <div class="scan-pulse-ring"></div>
+                <div class="scan-pulse-ring"></div>
+                <span class="scan-icon">👤</span>
+              </div>
+              <div class="camera-label" id="cam-label">POSITION FACE WITHIN FRAME</div>
+              <div class="scan-success-overlay" id="scan-success-overlay">
+                <span class="scan-check">✅</span>
+                <div class="scan-success-title">Facial Template Generated &amp; Synced</div>
+                <div class="scan-success-sub">3D Liveness Verified.<br>Template synced to Block Access Gates.<br>Anti-spoofing: PASS · Confidence: 99.7%</div>
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-tertiary);margin-top:6px" id="bio-ref-out">REF: —</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button class="btn btn-primary" style="flex:1" id="scan-btn" onclick="startScan()">⬡ Scan Face</button>
+              <button class="btn btn-ghost btn-sm" onclick="resetScan()">Reset</button>
+            </div>
+            <div style="margin-top:10px">
+              <div class="input-label" style="margin-bottom:6px">Student Reference</div>
+              <input class="input-field" id="bio-stu-id" placeholder="Enter student number for sync" oninput="sanitizeInput(this)">
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div><div class="card-title">Gate Access Sync Status</div></div></div>
+            <div style="display:flex;flex-direction:column;gap:6px" id="gate-status-list">
+              <div class="audit-item"><div><div class="ai-name">Block A — Main Gate</div></div><span class="badge badge-amber">Pending Sync</span></div>
+              <div class="audit-item"><div><div class="ai-name">Block B — Main Gate</div></div><span class="badge badge-amber">Pending Sync</span></div>
+              <div class="audit-item"><div><div class="ai-name">Block C — Main Gate</div></div><span class="badge badge-amber">Pending Sync</span></div>
+              <div class="audit-item"><div><div class="ai-name">Block D — Main Gate</div></div><span class="badge badge-amber">Pending Sync</span></div>
+              <div class="audit-item"><div><div class="ai-name">Block E — Main Gate</div></div><span class="badge badge-amber">Pending Sync</span></div>
+              <div class="audit-item"><div><div class="ai-name">Block F — Main Gate</div></div><span class="badge badge-amber">Pending Sync</span></div>
+            </div>
+          </div>
+        </div>
+        <!-- Calendar side -->
+        <div>
+          <div class="card">
+            <div class="card-header"><div><div class="card-title">Book Access Appointment</div><div class="card-sub">For students with lighting or camera issues</div></div></div>
+            <div class="appt-calendar">
+              <div class="cal-header">
+                <button class="cal-nav" onclick="calPrev()">‹</button>
+                <div class="cal-month" id="cal-month-label"></div>
+                <button class="cal-nav" onclick="calNext()">›</button>
+              </div>
+              <div class="cal-grid" id="cal-grid"></div>
+              <div class="time-slots" id="time-slots-wrap" style="display:none">
+                <div class="time-slots-header">Available Slots — <span id="selected-date-label">—</span></div>
+                <div class="time-slot-grid" id="time-slot-grid"></div>
+                <div style="margin-top:10px;display:flex;gap:8px">
+                  <button class="btn btn-primary" style="flex:1" onclick="bookAppointment()">Book Selected Slot</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:12px">
+            <div class="card-header"><div><div class="card-title">Upcoming Appointments</div></div></div>
+            <div id="appt-list" style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--text-tertiary);text-align:center;padding:12px 0">No appointments booked yet.</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /view-biometric -->
+
+    <!-- ══════════════ VIEW 3 — PASS TRACKER ══════════════ -->
+    <div class="view" id="view-passes">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Night-Out &amp; Weekend Pass Tracker</div>
+          <div class="page-sub">Log student departures and manage the real-time building manifest.</div>
+        </div>
+        <span class="badge badge-violet">● Admin — Secure</span>
+      </div>
+      <div class="pass-layout">
+        <!-- Form -->
+        <div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Log New Pass</div></div>
+            <div class="input-group">
+              <label class="input-label">Student Name</label>
+              <input class="input-field" id="pass-name" placeholder="Full name" oninput="sanitizeInput(this)">
+            </div>
+            <div class="input-group">
+              <label class="input-label">Student Number</label>
+              <input class="input-field" id="pass-snum" placeholder="STU2024…" oninput="sanitizeInput(this)">
+            </div>
+            <div class="input-group">
+              <label class="input-label">Block</label>
+              <select class="input-field" id="pass-block">
+                <option value="">Select block…</option>
+                <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Room Code</label>
+              <input class="input-field" id="pass-room" placeholder="e.g. A101-Room B" oninput="sanitizeInput(this)">
+            </div>
+            <div class="grid-2" style="gap:10px">
+              <div class="input-group" style="margin:0">
+                <label class="input-label">Departure</label>
+                <input class="input-field" type="datetime-local" id="pass-depart">
+              </div>
+              <div class="input-group" style="margin:0">
+                <label class="input-label">Return</label>
+                <input class="input-field" type="datetime-local" id="pass-return">
+              </div>
+            </div>
+            <div class="input-group" style="margin-top:10px">
+              <label class="input-label">Destination / Reason</label>
+              <input class="input-field" id="pass-dest" placeholder="e.g. Family visit — Emalahleni" oninput="sanitizeInput(this)">
+            </div>
+            <button class="btn btn-primary" style="width:100%;margin-top:6px" onclick="logPass()">+ Log Departure</button>
+          </div>
+        </div>
+        <!-- Manifest -->
+        <div>
+          <div class="stats-strip" id="pass-stats-strip">
+            <div class="stat-tile"><div class="st-val" id="stat-in" style="color:var(--emerald)">0</div><div class="st-label">In Building</div></div>
+            <div class="stat-tile"><div class="st-val" id="stat-out" style="color:var(--amber)">0</div><div class="st-label">Out of Building</div></div>
+            <div class="stat-tile"><div class="st-val" id="stat-overdue" style="color:var(--rose)">0</div><div class="st-label">Overdue Return</div></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Live Building Manifest</div>
+              <button class="btn btn-ghost btn-sm" onclick="exportManifest()">⬇ Export</button>
+            </div>
+            <div class="search-bar-wrap">
+              <span class="search-icon">🔍</span>
+              <input class="search-input" id="manifest-search" placeholder="Search by name or student number…" oninput="filterManifest()">
+            </div>
+            <div class="filter-row" id="manifest-filter-row">
+              <div class="filter-chip active" data-fblock="ALL" onclick="setBlockFilter('ALL',this)">All Blocks</div>
+              <div class="filter-chip" data-fblock="A" onclick="setBlockFilter('A',this)">Block A</div>
+              <div class="filter-chip" data-fblock="B" onclick="setBlockFilter('B',this)">Block B</div>
+              <div class="filter-chip" data-fblock="C" onclick="setBlockFilter('C',this)">Block C</div>
+              <div class="filter-chip" data-fblock="D" onclick="setBlockFilter('D',this)">Block D</div>
+              <div class="filter-chip" data-fblock="E" onclick="setBlockFilter('E',this)">Block E</div>
+              <div class="filter-chip" data-fblock="F" onclick="setBlockFilter('F',this)">Block F</div>
+            </div>
+            <div class="manifest-table-wrap">
+              <table class="manifest-table">
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Block / Room</th>
+                    <th>Departure</th>
+                    <th>Expected Return</th>
+                    <th>Destination</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="manifest-tbody"></tbody>
+              </table>
+              <div id="manifest-empty" style="text-align:center;padding:32px;color:var(--text-disabled);font-size:13px">No pass records yet. Log a departure above.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /view-passes -->
+
+    <!-- ══════════════ VIEW 4 — INSPECTION ══════════════ -->
+    <div class="view" id="view-inspection">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Move-Out Inspection Wizard</div>
+          <div class="page-sub">Tablet-optimised audit tool for building staff. Generates logged PDF report.</div>
+        </div>
+        <span class="badge badge-violet">● Pro Tier</span>
+      </div>
+      <div class="inspection-layout">
+        <div class="card" style="margin-bottom:14px">
+          <div class="wizard-header" id="wizard-header">
+            <div class="wizard-step current" id="wz-1">1</div>
+            <span class="wizard-step-label">Target Room</span>
+            <div class="wizard-connector" id="wc-1"></div>
+            <div class="wizard-step" id="wz-2">2</div>
+            <span class="wizard-step-label">Audit Items</span>
+            <div class="wizard-connector" id="wc-2"></div>
+            <div class="wizard-step" id="wz-3">3</div>
+            <span class="wizard-step-label">Inspector Notes</span>
+            <div class="wizard-connector" id="wc-3"></div>
+            <div class="wizard-step" id="wz-4">4</div>
+            <span class="wizard-step-label">Generate Report</span>
+          </div>
+
+          <!-- Wizard Step 1 -->
+          <div id="wiz-step-1">
+            <div class="audit-section">
+              <div class="audit-section-header">Target Room Selection</div>
+              <div class="grid-3" style="gap:10px">
+                <div class="input-group" style="margin:0">
+                  <label class="input-label">Block</label>
+                  <select class="input-field" id="insp-block" onchange="populateInspUnits()">
+                    <option value="">Select…</option>
+                    <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option>
+                  </select>
+                </div>
+                <div class="input-group" style="margin:0">
+                  <label class="input-label">Unit</label>
+                  <select class="input-field" id="insp-unit" onchange="updateInspLabel()">
+                    <option value="">Select block first…</option>
+                  </select>
+                </div>
+                <div class="input-group" style="margin:0">
+                  <label class="input-label">Room</label>
+                  <select class="input-field" id="insp-room" onchange="updateInspLabel()">
+                    <option value="">Select room…</option>
+                    <option>Room A</option><option>Room B</option><option>Room C</option>
+                  </select>
+                </div>
+              </div>
+              <div style="margin-top:12px">
+                <div class="input-group">
+                  <label class="input-label">Inspector Name</label>
+                  <input class="input-field" id="insp-name" placeholder="Staff member name" oninput="sanitizeInput(this)">
+                </div>
+                <div class="grid-2" style="gap:10px">
+                  <div class="input-group" style="margin:0">
+                    <label class="input-label">Inspection Date</label>
+                    <input class="input-field" type="date" id="insp-date">
+                  </div>
+                  <div class="input-group" style="margin:0">
+                    <label class="input-label">Student Being Checked Out</label>
+                    <input class="input-field" id="insp-student" placeholder="Name or student no." oninput="sanitizeInput(this)">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end">
+              <button class="btn btn-primary" onclick="wizNext(2)">Next: Audit Items →</button>
+            </div>
+          </div>
+
+          <!-- Wizard Step 2 -->
+          <div id="wiz-step-2" style="display:none">
+            <div class="audit-section">
+              <div class="audit-section-header">Walls &amp; Ceiling</div>
+              <div class="audit-item" id="ai-walls"><div><div class="ai-name">Wall surfaces</div><div class="ai-note">Paint, markings, damage, holes</div></div><div class="condition-toggle"><button class="cond-btn" onclick="setCondition('walls','Good',this)">Good</button><button class="cond-btn" onclick="setCondition('walls','Damaged',this)">Damaged</button></div></div>
+              <div class="audit-item" id="ai-ceiling"><div><div class="ai-name">Ceiling &amp; light fitting</div><div class="ai-note">Cracks, stains, bulb condition</div></div><div class="condition-toggle"><button class="cond-btn" onclick="setCondition('ceiling','Good',this)">Good</button><button class="cond-btn" onclick="setCondition('ceiling','Damaged',this)">Damaged</button></div></div>
+            </div>
+            <div class="audit-section">
+              <div class="audit-section-header">Furniture</div>
+              <div class="audit-item" id="ai-bed-window"><div><div class="ai-name">Bed (Near Window)</div><div class="ai-note">Frame, base, mattress — window-side unit</div></div><div class="condition-toggle"><button class="cond-btn" onclick="setCondition('bed-window','Good',this)">Good</button><button class="cond-btn" onclick="setCondition('bed-window','Damaged',this)">Damaged</button></div></div>
+              <div class="audit-item" id="ai-bed-door"><div><div class="ai-name">Bed (Near Door)</div><div class="ai-note">Frame, base, mattress — door-side unit</div></div><div class="condition-toggle"><button class="cond-btn" onclick="setCondition('bed-door','Good',this)">Good</button><button class="cond-btn" onclick="setCondition('bed-door','Damaged',this)">Damaged</button></div></div>
+              <div class="audit-item" id="ai-desk"><div><div class="ai-name">Study desk &amp; chair</div><div class="ai-note">Surface scratches, structural damage</div></div><div class="condition-toggle"><button class="cond-btn" onclick="setCondition('desk','Good',this)">Good</button><button class="cond-btn" onclick="setCondition('desk','Damaged',this)">Damaged</button></div></div>
+              <div class="audit-item" id="ai-wardrobe"><div><div class="ai-name">Wardrobe / storage unit</div><div class="ai-note">Hinges, shelves, exterior</div></div><div class="condition-toggle"><button class="cond-btn" onclick="setCondition('wardrobe','Good',this)">Good</button><button class="cond-btn" onclick="setCondition('wardrobe','Damaged',this)">Damaged</button></div></div>
+            </div>
+            <div class="audit-section">
+              <div class="audit-section-header">Doors &amp; Access</div>
+              <div class="audit-item" id="ai-door-handle"><div><div class="ai-name">Door handles &amp; lock</div><div class="ai-note">Operation, damage, key return</div></div><div class="condition-toggle"><button class="cond-btn" onclick="setCondition('door-handle','Good',this)">Good</button><button class="cond-btn" onclick="setCondition('door-handle','Damaged',this)">Damaged</button></div></div>
+              <div class="audit-item" id="ai-door-frame"><div><div class="ai-name">Door frame &amp; seal</div><div class="ai-note">Warping, damage, seals</div></div><div class="condition-toggle"><button class="cond-btn" onclick="setCondition('door-frame','Good',this)">Good</button><button class="cond-btn" onclick="setCondition('door-frame','Damaged',this)">Damaged</button></div></div>
+            </div>
+            <div class="audit-section">
+              <div class="audit-section-header">Flooring</div>
+              <div class="audit-item" id="ai-floor"><div><div class="ai-name">Floor surface</div><div class="ai-note">Tiles, vinyl, carpet condition</div></div><div class="condition-toggle"><button class="cond-btn" onclick="setCondition('floor','Good',this)">Good</button><button class="cond-btn" onclick="setCondition('floor','Damaged',this)">Damaged</button></div></div>
+            </div>
+            <div style="display:flex;justify-content:space-between">
+              <button class="btn btn-ghost" onclick="wizNext(1)">← Back</button>
+              <button class="btn btn-primary" onclick="wizNext(3)">Next: Notes →</button>
+            </div>
+          </div>
+
+          <!-- Wizard Step 3 -->
+          <div id="wiz-step-3" style="display:none">
+            <div class="audit-section">
+              <div class="audit-section-header">Inspector Notes &amp; Evidence</div>
+              <div class="input-group">
+                <label class="input-label">General Observations</label>
+                <textarea class="input-field" id="insp-notes" rows="4" placeholder="Describe any damage, missing items, cleanliness issues, or notable observations…" style="resize:vertical" oninput="sanitizeInput(this)"></textarea>
+              </div>
+              <div class="input-group">
+                <label class="input-label">Deductions Recommended (ZAR)</label>
+                <input class="input-field" id="insp-deduct" type="number" min="0" max="99999" placeholder="0.00" style="font-family:'JetBrains Mono',monospace">
+              </div>
+              <div style="margin-bottom:8px">
+                <label class="input-label" style="margin-bottom:8px">Photo Evidence Placeholders</label>
+                <div class="photo-strip">
+                  <div class="photo-placeholder" title="Tap to attach photo">📷</div>
+                  <div class="photo-placeholder" title="Tap to attach photo">📷</div>
+                  <div class="photo-placeholder" title="Tap to attach photo">📷</div>
+                  <div class="photo-placeholder" title="Tap to attach photo">📷</div>
+                  <div class="photo-placeholder" title="Tap to attach photo" style="border-style:solid;border-color:var(--blue-ring);color:var(--blue)">+</div>
+                </div>
+              </div>
+              <div class="input-group">
+                <label class="input-label">Student Signature (Reference)</label>
+                <input class="input-field" id="insp-sig" placeholder="Type student full name as signature confirmation" oninput="sanitizeInput(this)">
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between">
+              <button class="btn btn-ghost" onclick="wizNext(2)">← Back</button>
+              <button class="btn btn-primary" onclick="wizNext(4)">Review &amp; Generate →</button>
+            </div>
+          </div>
+
+          <!-- Wizard Step 4 -->
+          <div id="wiz-step-4" style="display:none">
+            <div class="audit-section">
+              <div class="audit-section-header">Pre-submission Review</div>
+              <div id="insp-review-content" style="font-size:13px;color:var(--text-secondary);line-height:1.7"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;gap:10px">
+              <button class="btn btn-ghost" onclick="wizNext(3)">← Back</button>
+              <button class="btn btn-primary" onclick="generateReport()" style="flex:1">📄 Generate PDF &amp; Log Maintenance</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /view-inspection -->
+
+  </div><!-- /content-area -->
+</div><!-- /main-wrap -->
+
+<!-- ════════════════════════ MODALS ════ -->
+<!-- Intake Confirm Modal -->
+<div class="modal-overlay" id="modal-intake">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('modal-intake')">✕</button>
+    <div class="modal-icon">🎉</div>
+    <div class="modal-title">Bed Successfully Reserved</div>
+    <div class="modal-sub">The following allocation has been registered in the Corridor Hill system.</div>
+    <div class="modal-ref" id="modal-ref-num">CH-ALLOC-———</div>
+    <div id="modal-detail-rows"></div>
+    <button class="btn btn-emerald" style="width:100%;margin-top:16px" onclick="closeModal('modal-intake');resetIntake()">Done — Start New Application</button>
+  </div>
+</div>
+
+<!-- Inspection Report Modal -->
+<div class="modal-overlay" id="modal-report">
+  <div class="modal-box" style="max-width:600px;max-height:90vh;overflow-y:auto">
+    <button class="modal-close" onclick="closeModal('modal-report')">✕</button>
+    <div class="report-header">
+      <div class="report-logo">◆ Corridor Hill Ecosystem</div>
+      <div class="report-title">Move-Out Inspection Report</div>
+      <div class="report-meta" id="report-meta">REF: — · Date: —</div>
+    </div>
+    <div id="report-body"></div>
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <button class="btn btn-primary" style="flex:1" onclick="showToast('📄','PDF Generated','Report saved to maintenance log',true)">⬇ Save PDF Report</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-report')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════ -->
+<script>
+/* ══════════════════════════════════════
+   GLOBALS & STATE
+══════════════════════════════════════ */
+const BLOCKS = ['A','B','C','D','E','F'];
+
+// Generate deterministic units per block (2 floors × 6 units + a few extras)
+function genUnits(block) {
+  const floors = [1,2,3,4,5];
+  const unitsPerFloor = [1,2,3,4,5,6];
+  const list = [];
+  floors.forEach(f => unitsPerFloor.forEach(u => list.push(`${f}0${u}`)));
+  return list.slice(0, 20); // 20 units per block
+}
+
+// Seeded occupancy state
+function getRoomState(block, unit, room) {
+  const seed = (block.charCodeAt(0) * 997 + parseInt(unit) * 31 + room.charCodeAt(0)) % 10;
+  if (seed < 3) return 'occupied';
+  return 'avail';
+}
+
+const appState = {
+  block: null, unit: null, room: null,
+  funding: 'NSFAS',
+  studentName: '', studentNum: '', studentId: ''
+};
+
+const passRecords = [];
+const appointments = [];
+const auditConditions = {};
+let passFilterBlock = 'ALL';
+
+/* ══════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════ */
+const crumbMap = {
+  intake: 'Room Intake',
+  biometric: 'Biometric Hub',
+  passes: 'Pass Tracker',
+  inspection: 'Move-Out Audit'
+};
+
+function setView(id, el) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  el.classList.add('active');
+  document.getElementById('topbar-crumb').textContent = crumbMap[id] || id;
+  if (id === 'passes') renderManifest();
+}
+
+/* ══════════════════════════════════════
+   INPUT SANITIZATION (POPIA / SQL-safe)
+══════════════════════════════════════ */
+function sanitizeInput(el) {
+  // Strip dangerous chars: <, >, ", ', ;, --, /* 
+  let v = el.value;
+  v = v.replace(/<|>|"|'|;|--|\*\//g, '');
+  el.value = v;
+}
+function sanitizeIDInput(el) {
+  // SA ID: digits only
+  let v = el.value.replace(/\D/g, '').slice(0, 13);
+  el.value = v;
+  appState.studentId = v;
+  // POPIA: mask middle digits
+  const masked = maskSAID(v);
+  document.getElementById('stu-id-masked').textContent = masked ? `Stored: ${masked}` : '';
+  updateSummary();
+}
+function maskSAID(id) {
+  if (!id || id.length < 6) return id;
+  const show = 4, tail = 3;
+  const mid = id.length - show - tail;
+  return id.slice(0, show) + '•'.repeat(Math.max(0, mid)) + id.slice(-tail);
+}
+
+/* ══════════════════════════════════════
+   VIEW 1 — INTAKE LOGIC
+══════════════════════════════════════ */
+function selectFunding(el) {
+  document.querySelectorAll('.funding-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  appState.funding = el.dataset.fund;
+  updateSummary();
+}
+
+function selectBlock(b, el) {
+  appState.block = b; appState.unit = null; appState.room = null;
+  document.querySelectorAll('.block-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderUnitGrid(b);
+  document.getElementById('unit-grid-wrap').style.display = 'block';
+  document.getElementById('unit-section-label').textContent = `Select a unit in Block ${b}`;
+  document.getElementById('cluster-wrap').style.display = 'none';
+  updateSummary();
+}
+
+function renderUnitGrid(block) {
+  const units = genUnits(block);
+  const grid = document.getElementById('unit-grid');
+  grid.innerHTML = '';
+  units.forEach(u => {
+    const card = document.createElement('div');
+    card.className = 'unit-card' + (appState.unit === u ? ' selected' : '');
+    card.innerHTML = `<div class="uc-label">${block}${u}</div><div class="uc-sub">3 rooms</div>`;
+    card.onclick = () => selectUnit(block, u, card);
+    grid.appendChild(card);
+  });
+}
+
+function selectUnit(block, unit, el) {
+  appState.unit = unit; appState.room = null;
+  document.querySelectorAll('.unit-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('cluster-label').textContent = `Cluster map — Unit ${block}${unit}`;
+  renderCluster(block, unit);
+  document.getElementById('cluster-wrap').style.display = 'block';
+  updateSummary();
+}
+
+function renderCluster(block, unit) {
+  const rooms = ['A','B','C'];
+  const container = document.getElementById('cluster-rooms');
+  container.innerHTML = '';
+  rooms.forEach(r => {
+    const state = getRoomState(block, unit, r);
+    const isSelected = appState.room === r;
+    const div = document.createElement('div');
+    div.className = `cluster-room ${isSelected ? 'selected' : state}`;
+    div.innerHTML = `
+      <div class="cr-letter">R${r}</div>
+      <div class="cr-label">Room ${r}</div>
+      <div class="cr-status">${state === 'occupied' ? 'Occupied' : isSelected ? 'Selected' : 'Available'}</div>
+    `;
+    if (state !== 'occupied') {
+      div.onclick = () => selectRoom(r);
+    }
+    container.appendChild(div);
+  });
+}
+
+function selectRoom(r) {
+  appState.room = r;
+  renderCluster(appState.block, appState.unit);
+  updateSummary();
+  checkConfirmReady();
+}
+
+function updateSummary() {
+  const name = document.getElementById('stu-name').value.trim();
+  const snum = document.getElementById('stu-num').value.trim();
+  const sid  = document.getElementById('stu-id').value.trim();
+  appState.studentName = name; appState.studentNum = snum;
+
+  document.getElementById('sum-name').textContent    = name || '—';
+  document.getElementById('sum-studnum').textContent  = snum || '—';
+  document.getElementById('sum-id').textContent       = sid ? maskSAID(sid) : '—';
+  document.getElementById('sum-funding').textContent  = appState.funding;
+  document.getElementById('sum-block').textContent    = appState.block || '—';
+  document.getElementById('sum-unit').textContent     = appState.unit ? (appState.block + appState.unit) : '—';
+  document.getElementById('sum-room').textContent     = appState.room ? `Room ${appState.room}` : '—';
+
+  // Path breadcrumbs
+  const pathEl = document.getElementById('summary-path');
+  if (appState.block && appState.unit && appState.room) {
+    pathEl.innerHTML = `
+      <span class="summary-crumb">Block ${appState.block}</span>
+      <span class="summary-arrow">›</span>
+      <span class="summary-crumb">${appState.block}${appState.unit}</span>
+      <span class="summary-arrow">›</span>
+      <span class="summary-crumb" style="color:var(--blue);border-color:var(--blue-ring)">Room ${appState.room}</span>
+    `;
+    document.getElementById('sum-status').innerHTML = '<span class="badge badge-blue">Room Selected</span>';
+  } else if (appState.block) {
+    pathEl.innerHTML = `<span class="summary-crumb">Block ${appState.block}</span><span class="summary-arrow">›</span><span class="summary-crumb" style="color:var(--text-disabled)">Select unit…</span>`;
+    document.getElementById('sum-status').innerHTML = '<span class="badge badge-amber">Pending</span>';
+  } else {
+    pathEl.innerHTML = `<span class="summary-crumb" style="color:var(--text-disabled)">No block selected</span>`;
+    document.getElementById('sum-status').innerHTML = '<span class="badge badge-amber">Pending</span>';
+  }
+  checkConfirmReady();
+}
+
+function checkConfirmReady() {
+  const name = document.getElementById('stu-name').value.trim();
+  const snum = document.getElementById('stu-num').value.trim();
+  const sid  = document.getElementById('stu-id').value.trim();
+  const ready = name && snum && sid.length === 13 && appState.block && appState.unit && appState.room;
+  document.getElementById('confirm-btn').disabled = !ready;
+}
+
+function openConfirmModal() {
+  const ref = 'CH-ALLOC-' + Date.now().toString(36).toUpperCase().slice(-6);
+  document.getElementById('modal-ref-num').textContent = ref;
+  const rows = [
+    { k: 'Student Name', v: appState.studentName },
+    { k: 'Student No.',  v: appState.studentNum },
+    { k: 'SA ID',        v: maskSAID(appState.studentId) },
+    { k: 'Funding',      v: appState.funding },
+    { k: 'Block',        v: 'Block ' + appState.block },
+    { k: 'Unit',         v: appState.block + appState.unit },
+    { k: 'Room',         v: 'Room ' + appState.room },
+    { k: 'Allocation',   v: new Date().toLocaleString('en-ZA') },
+  ];
+  document.getElementById('modal-detail-rows').innerHTML = rows.map(r =>
+    `<div class="modal-detail-row"><span class="modal-detail-key">${r.k}</span><span class="modal-detail-val">${r.v}</span></div>`
+  ).join('');
+  document.getElementById('modal-intake').classList.add('open');
+  showToast('✅', 'Allocation Confirmed', `${appState.studentName} → ${appState.block}${appState.unit} Room ${appState.room}`, true);
+}
+
+function resetIntake() {
+  appState.block = null; appState.unit = null; appState.room = null;
+  appState.studentName = ''; appState.studentNum = ''; appState.studentId = '';
+  ['stu-name','stu-num','stu-id'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('stu-id-masked').textContent = '';
+  document.querySelectorAll('.block-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('unit-grid-wrap').style.display = 'none';
+  document.getElementById('cluster-wrap').style.display = 'none';
+  updateSummary();
+}
+
+/* ══════════════════════════════════════
+   VIEW 2 — BIOMETRIC LOGIC
+══════════════════════════════════════ */
+let scanRunning = false;
+
+function startScan() {
+  if (scanRunning) return;
+  scanRunning = true;
+  const btn = document.getElementById('scan-btn');
+  btn.disabled = true; btn.textContent = '⬡ Scanning…';
+  document.getElementById('scan-line').style.display = 'block';
+  document.getElementById('cam-status-dot').style.background = 'var(--amber)';
+  document.getElementById('cam-status-txt').textContent = 'SCANNING';
+  document.getElementById('cam-label').textContent = 'PROCESSING 3D LIVENESS…';
+
+  // Progress stages
+  const stages = [
+    [400, 'DEPTH MAP ANALYSIS'],
+    [900, 'ANTI-SPOOFING CHECK'],
+    [1400, 'TEMPLATE GENERATION'],
+    [1900, 'GATE SYNC IN PROGRESS'],
+    [2300, () => showScanSuccess()]
+  ];
+  stages.forEach(([delay, action]) => {
+    setTimeout(() => {
+      if (typeof action === 'string') document.getElementById('cam-label').textContent = action;
+      else action();
+    }, delay);
+  });
+}
+
+function showScanSuccess() {
+  const bioRef = 'BIO-' + Date.now().toString(36).toUpperCase().slice(-8);
+  document.getElementById('scan-success-overlay').classList.add('show');
+  document.getElementById('bio-ref-out').textContent = `REF: ${bioRef}`;
+  document.getElementById('cam-status-dot').style.background = 'var(--emerald)';
+  document.getElementById('cam-status-txt').textContent = 'VERIFIED';
+  document.getElementById('scan-line').style.display = 'none';
+  // Sync gates
+  const items = document.querySelectorAll('#gate-status-list .audit-item');
+  items.forEach((item, i) => {
+    setTimeout(() => {
+      item.querySelector('.badge').className = 'badge badge-emerald';
+      item.querySelector('.badge').textContent = 'Synced ✓';
+    }, i * 200 + 400);
+  });
+  showToast('🪪', 'Biometric Registered', `Template synced · Ref: ${bioRef}`, true);
+  scanRunning = false;
+  document.getElementById('scan-btn').disabled = false;
+  document.getElementById('scan-btn').textContent = '⬡ Scan Face';
+}
+
+function resetScan() {
+  scanRunning = false;
+  document.getElementById('scan-success-overlay').classList.remove('show');
+  document.getElementById('scan-line').style.display = 'none';
+  document.getElementById('cam-status-dot').style.background = 'var(--rose)';
+  document.getElementById('cam-status-txt').textContent = 'STANDBY';
+  document.getElementById('cam-label').textContent = 'POSITION FACE WITHIN FRAME';
+  document.getElementById('scan-btn').disabled = false;
+  document.getElementById('scan-btn').textContent = '⬡ Scan Face';
+  document.querySelectorAll('#gate-status-list .badge').forEach(b => {
+    b.className = 'badge badge-amber'; b.textContent = 'Pending Sync';
+  });
+}
+
+/* ── Calendar ── */
+let calYear, calMonth, selectedCalDay = null, selectedTimeSlot = null;
+const bookedSlots = {}; // date → [slot]
+const bookedAppointments = [];
+
+function initCalendar() {
+  const now = new Date();
+  calYear = now.getFullYear(); calMonth = now.getMonth();
+  renderCal();
+}
+function calPrev() { calMonth--; if(calMonth < 0){ calMonth=11; calYear--; } renderCal(); }
+function calNext() { calMonth++; if(calMonth > 11){ calMonth=0; calYear++; } renderCal(); }
+
+function renderCal() {
+  const now = new Date();
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('cal-month-label').textContent = `${months[calMonth]} ${calYear}`;
+  const first = new Date(calYear, calMonth, 1).getDay();
+  const days = new Date(calYear, calMonth+1, 0).getDate();
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => {
+    const h = document.createElement('div'); h.className='cal-day-header'; h.textContent=d; grid.appendChild(h);
+  });
+  for(let i=0;i<first;i++){const e=document.createElement('div');e.className='cal-day empty';grid.appendChild(e);}
+  for(let d=1;d<=days;d++){
+    const el=document.createElement('div');
+    const dateStr=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isPast=new Date(calYear,calMonth,d)<new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    const isToday=d===now.getDate()&&calMonth===now.getMonth()&&calYear===now.getFullYear();
+    const isBooked=bookedSlots[dateStr];
+    el.className='cal-day'+(isPast?' past':isBooked?' booked':isToday?' today':'')+(selectedCalDay===dateStr?' selected':'');
+    el.textContent=d;
+    if(!isPast){
+      el.onclick=()=>{
+        selectedCalDay=dateStr; selectedTimeSlot=null;
+        renderCal();
+        renderTimeSlots(dateStr);
+        document.getElementById('time-slots-wrap').style.display='block';
+        document.getElementById('selected-date-label').textContent=dateStr;
+      };
+    }
+    grid.appendChild(el);
+  }
+}
+
+function renderTimeSlots(dateStr) {
+  const grid = document.getElementById('time-slot-grid');
+  grid.innerHTML='';
+  const booked = bookedSlots[dateStr]||[];
+  const times=['08:00','08:05','08:10','08:15','08:20','08:25','08:30','08:35','08:40','08:45','09:00','09:05','09:10','09:15','09:20','09:25','09:30','09:35','09:40','09:45','10:00','10:05','10:10','10:15','10:30','10:35','10:40','10:45','11:00','11:05','11:10','11:15'];
+  times.forEach(t=>{
+    const el=document.createElement('div');
+    const isTaken=booked.includes(t);
+    el.className='time-slot'+(isTaken?' taken':selectedTimeSlot===t?' selected':'');
+    el.textContent=t;
+    if(!isTaken) el.onclick=()=>{ selectedTimeSlot=t; renderTimeSlots(dateStr); };
+    grid.appendChild(el);
+  });
+}
+
+function bookAppointment() {
+  if(!selectedCalDay||!selectedTimeSlot){ showToast('⚠️','Select a date and time slot','',false); return; }
+  if(!bookedSlots[selectedCalDay]) bookedSlots[selectedCalDay]=[];
+  bookedSlots[selectedCalDay].push(selectedTimeSlot);
+  const stuRef=document.getElementById('bio-stu-id').value||'Walk-in';
+  bookedAppointments.push({date:selectedCalDay,time:selectedTimeSlot,student:stuRef});
+  renderCal();
+  renderTimeSlots(selectedCalDay);
+  renderAppointmentList();
+  showToast('📅','Appointment Booked',`${selectedCalDay} at ${selectedTimeSlot}`,true);
+}
+
+function renderAppointmentList(){
+  const el=document.getElementById('appt-list');
+  if(!bookedAppointments.length){el.innerHTML='<div style="color:var(--text-disabled);font-size:12px;text-align:center;padding:12px">No appointments booked yet.</div>';return;}
+  el.innerHTML=bookedAppointments.map(a=>`
+    <div class="audit-item">
+      <div><div class="ai-name">${a.date} · ${a.time}</div><div class="ai-note">Student: ${sanitize(a.student)}</div></div>
+      <span class="badge badge-blue">Confirmed</span>
+    </div>`).join('');
+}
+
+/* ══════════════════════════════════════
+   VIEW 3 — PASS TRACKER LOGIC
+══════════════════════════════════════ */
+const SEED_MANIFEST = [
+  {name:'Bongani Nkosi',snum:'STU2024001',block:'A',room:'A101-Room A',departure:'2024-11-20 17:00',returnDate:'2024-11-22 18:00',dest:'Family visit - Soweto',status:'out'},
+  {name:'Thembi Shabalala',snum:'STU2024002',block:'B',room:'B202-Room C',departure:'2024-11-21 08:00',returnDate:'2024-11-21 22:00',dest:'Medical appointment',status:'in'},
+  {name:'Sipho Dlamini',snum:'STU2024003',block:'C',room:'C303-Room B',departure:'2024-11-19 14:00',returnDate:'2024-11-20 20:00',dest:'Weekend at home',status:'overdue'},
+  {name:'Nomsa Mahlangu',snum:'STU2024004',block:'D',room:'D102-Room A',departure:'2024-11-22 07:00',returnDate:'2024-11-22 23:00',dest:'Graduation ceremony',status:'out'},
+  {name:'Thabo Molefe',snum:'STU2024005',block:'F',room:'F203-Room B',departure:'2024-11-20 12:00',returnDate:'2024-11-21 12:00',dest:'Sport tournament - Witbank',status:'in'},
+];
+SEED_MANIFEST.forEach(r => passRecords.push(r));
+
+function logPass(){
+  const name=document.getElementById('pass-name').value.trim();
+  const snum=document.getElementById('pass-snum').value.trim();
+  const block=document.getElementById('pass-block').value;
+  const room=document.getElementById('pass-room').value.trim();
+  const dep=document.getElementById('pass-depart').value;
+  const ret=document.getElementById('pass-return').value;
+  const dest=document.getElementById('pass-dest').value.trim();
+  if(!name||!snum||!block||!dep||!ret){showToast('⚠️','All required fields must be filled','',false);return;}
+  passRecords.push({name:sanitize(name),snum:sanitize(snum),block,room:sanitize(room)||`${block}???`,departure:dep.replace('T',' '),returnDate:ret.replace('T',' '),dest:sanitize(dest)||'Not specified',status:'out'});
+  ['pass-name','pass-snum','pass-room','pass-depart','pass-return','pass-dest'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('pass-block').value='';
+  renderManifest();
+  updatePassBadge();
+  showToast('🌙','Pass Logged',`${sanitize(name)} checked out`,true);
+}
+
+let manifestSearchQ='';
+function filterManifest(){ manifestSearchQ=(document.getElementById('manifest-search').value||'').toLowerCase(); renderManifest(); }
+function setBlockFilter(b,el){ passFilterBlock=b; document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active')); el.classList.add('active'); renderManifest(); }
+
+function renderManifest(){
+  const tbody=document.getElementById('manifest-tbody');
+  const empty=document.getElementById('manifest-empty');
+  const now=new Date();
+  let filtered=passRecords.filter(r=>{
+    if(passFilterBlock!=='ALL'&&r.block!==passFilterBlock) return false;
+    if(manifestSearchQ&&!r.name.toLowerCase().includes(manifestSearchQ)&&!r.snum.toLowerCase().includes(manifestSearchQ)) return false;
+    return true;
+  });
+  let inCnt=0,outCnt=0,overdue=0;
+  passRecords.forEach(r=>{
+    const ret=new Date(r.returnDate);
+    if(r.status==='in') inCnt++;
+    else if(r.status==='out'){ if(ret<now) overdue++; else outCnt++; }
+    else if(r.status==='overdue') overdue++;
+  });
+  document.getElementById('stat-in').textContent=inCnt;
+  document.getElementById('stat-out').textContent=outCnt;
+  document.getElementById('stat-overdue').textContent=overdue;
+  updatePassBadge();
+
+  if(!filtered.length){ tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  const stBadge=(s)=>{
+    if(s==='in') return '<span class="badge badge-emerald">In Building</span>';
+    if(s==='overdue') return '<span class="badge badge-rose">Overdue</span>';
+    return '<span class="badge badge-amber">Out of Building</span>';
+  };
+  tbody.innerHTML=filtered.map((r,i)=>`
+    <tr>
+      <td><div class="student-name">${r.name}</div><div class="student-id">${r.snum}</div></td>
+      <td><span class="badge badge-blue" style="font-size:10px">Block ${r.block}</span> <span style="font-size:11px;color:var(--text-secondary)">${r.room}</span></td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px">${r.departure}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px">${r.returnDate}</td>
+      <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r.dest}">${r.dest}</td>
+      <td>${stBadge(r.status)}</td>
+      <td><button class="btn btn-ghost btn-sm" onclick="markReturned(${i})">Check In</button></td>
+    </tr>`).join('');
+}
+
+function markReturned(i){
+  passRecords[i].status='in';
+  renderManifest();
+  showToast('✅','Student Checked In',passRecords[i].name+' marked as returned',true);
+}
+function updatePassBadge(){ const out=passRecords.filter(r=>r.status==='out'||r.status==='overdue').length; document.getElementById('badge-out').textContent=out; }
+function exportManifest(){ showToast('⬇','Manifest Exported','CSV download simulated (prod would generate file)',true); }
+
+/* ══════════════════════════════════════
+   VIEW 4 — INSPECTION WIZARD
+══════════════════════════════════════ */
+let wizardStep=1;
+const conditions={};
+
+function wizNext(n){
+  if(n===2){
+    const blk=document.getElementById('insp-block').value;
+    const unt=document.getElementById('insp-unit').value;
+    const rm=document.getElementById('insp-room').value;
+    const iname=document.getElementById('insp-name').value.trim();
+    if(!blk||!unt||!rm||!iname){showToast('⚠️','Fill in all room & inspector details','',false);return;}
+  }
+  if(n===4){ buildInspReview(); }
+  wizardStep=n;
+  [1,2,3,4].forEach(s=>{
+    document.getElementById('wiz-step-'+s).style.display=s===n?'block':'none';
+    const el=document.getElementById('wz-'+s);
+    el.className='wizard-step'+(s<n?' done':s===n?' current':'');
+    el.textContent=s<n?'✓':s;
+    if(s<n) document.getElementById('wc-'+s).classList.add('done');
+    else document.getElementById('wc-'+s)&&document.getElementById('wc-'+s).classList.remove('done');
+  });
+}
+
+function populateInspUnits(){
+  const block=document.getElementById('insp-block').value;
+  const sel=document.getElementById('insp-unit');
+  sel.innerHTML='<option value="">Select unit…</option>';
+  if(!block) return;
+  genUnits(block).forEach(u=>{ const o=document.createElement('option'); o.value=u; o.textContent=block+u; sel.appendChild(o); });
+}
+function updateInspLabel(){}
+
+function setCondition(item,cond,btn){
+  conditions[item]=cond;
+  const parent=btn.closest('.condition-toggle');
+  parent.querySelectorAll('.cond-btn').forEach(b=>{ b.classList.remove('good','damaged'); });
+  btn.classList.add(cond.toLowerCase());
+}
+
+function buildInspReview(){
+  const block=document.getElementById('insp-block').value;
+  const unit=document.getElementById('insp-unit').value;
+  const room=document.getElementById('insp-room').value;
+  const iname=document.getElementById('insp-name').value;
+  const idate=document.getElementById('insp-date').value;
+  const student=document.getElementById('insp-student').value;
+  const notes=document.getElementById('insp-notes').value;
+  const deduct=document.getElementById('insp-deduct').value||'0';
+  const itemNames={walls:'Walls',ceiling:'Ceiling',mattress:'Mattress',desk:'Desk & Chair',wardrobe:'Wardrobe','door-handle':'Door Handles','door-frame':'Door Frame',floor:'Flooring'};
+  const html=`
+    <div class="summary-row"><span class="sk">Target Room</span><span class="sv">Block ${block} · ${block+unit} · ${room}</span></div>
+    <div class="summary-row"><span class="sk">Inspector</span><span class="sv">${sanitize(iname)}</span></div>
+    <div class="summary-row"><span class="sk">Date</span><span class="sv">${idate}</span></div>
+    <div class="summary-row"><span class="sk">Student</span><span class="sv">${sanitize(student)||'—'}</span></div>
+    <div class="divider"></div>
+    ${Object.keys(itemNames).map(k=>`<div class="summary-row"><span class="sk">${itemNames[k]}</span><span class="sv" style="color:${conditions[k]==='Damaged'?'var(--rose)':'var(--emerald)'}">${conditions[k]||'Not assessed'}</span></div>`).join('')}
+    <div class="divider"></div>
+    <div class="summary-row"><span class="sk">Deduction</span><span class="sv" style="color:var(--amber)">R ${parseFloat(deduct).toFixed(2)}</span></div>
+    <div class="summary-row"><span class="sk">Notes</span><span class="sv" style="font-family:'JetBrains Mono',monospace;font-size:10px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${sanitize(notes)||'None'}</span></div>
+  `;
+  document.getElementById('insp-review-content').innerHTML=html;
+}
+
+function generateReport(){
+  const block=document.getElementById('insp-block').value;
+  const unit=document.getElementById('insp-unit').value;
+  const room=document.getElementById('insp-room').value;
+  const iname=document.getElementById('insp-name').value;
+  const idate=document.getElementById('insp-date').value||new Date().toISOString().split('T')[0];
+  const student=document.getElementById('insp-student').value;
+  const notes=document.getElementById('insp-notes').value;
+  const deduct=parseFloat(document.getElementById('insp-deduct').value||'0').toFixed(2);
+  const ref='INSP-'+Date.now().toString(36).toUpperCase().slice(-8);
+  const itemNames={walls:'Walls',ceiling:'Ceiling',mattress:'Mattress',desk:'Desk & Chair',wardrobe:'Wardrobe','door-handle':'Door Handles','door-frame':'Door Frame',floor:'Flooring'};
+  const damaged=Object.keys(itemNames).filter(k=>conditions[k]==='Damaged');
+  const good=Object.keys(itemNames).filter(k=>conditions[k]==='Good');
+  const score=Math.round((good.length/(Object.keys(itemNames).length))*100)||0;
+  const scoreColor=score>80?'var(--emerald)':score>50?'var(--amber)':'var(--rose)';
+  document.getElementById('report-meta').textContent=`REF: ${ref} · Date: ${idate} · Inspector: ${sanitize(iname)||'—'}`;
+  document.getElementById('report-body').innerHTML=`
+    <div class="report-section">
+      <div class="report-section-title">Property Details</div>
+      <div class="report-item"><span class="ri-key">Location</span><span>Block ${block} · Unit ${block+unit} · ${room}</span></div>
+      <div class="report-item"><span class="ri-key">Student</span><span>${sanitize(student)||'—'}</span></div>
+      <div class="report-item"><span class="ri-key">Inspection Date</span><span>${idate}</span></div>
+      <div class="report-item"><span class="ri-key">Report Reference</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue)">${ref}</span></div>
+    </div>
+    <div class="report-score">
+      <div class="report-score-num" style="color:${scoreColor}">${score}%</div>
+      <div class="report-score-label">Room Condition Score · ${good.length}/${Object.keys(itemNames).length} Items Good</div>
+    </div>
+    <div class="report-section">
+      <div class="report-section-title">Audit Results</div>
+      ${Object.keys(itemNames).map(k=>`
+        <div class="report-item">
+          <span class="ri-key">${itemNames[k]}</span>
+          <span class="badge ${conditions[k]==='Damaged'?'badge-rose':conditions[k]==='Good'?'badge-emerald':'badge-amber'}">${conditions[k]||'Not assessed'}</span>
+        </div>`).join('')}
+    </div>
+    ${damaged.length?`
+    <div class="report-section">
+      <div class="report-section-title">⚠ Maintenance Actions Required</div>
+      ${damaged.map(k=>`<div class="report-item"><span class="ri-key">${itemNames[k]}</span><span style="color:var(--rose)">Maintenance Required</span></div>`).join('')}
+    </div>`:''}
+    <div class="report-section">
+      <div class="report-section-title">Financial Summary</div>
+      <div class="report-item"><span class="ri-key">Recommended Deduction</span><span style="font-weight:700;color:var(--amber)">R ${deduct}</span></div>
+    </div>
+    ${notes?`<div class="report-section"><div class="report-section-title">Inspector Notes</div><div style="font-size:12px;color:var(--text-secondary);line-height:1.6;padding:8px;background:var(--bg-raised);border-radius:var(--r-sm)">${sanitize(notes)}</div></div>`:''}
+    <div class="report-section">
+      <div class="report-section-title">Signatures</div>
+      <div class="report-item"><span class="ri-key">Inspector</span><span>${sanitize(iname)||'—'}</span></div>
+      <div class="report-item"><span class="ri-key">Student</span><span>${sanitize(document.getElementById('insp-sig').value)||'Pending'}</span></div>
+      <div class="report-item"><span class="ri-key">Generated</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px">${new Date().toLocaleString('en-ZA')}</span></div>
+    </div>
+  `;
+  document.getElementById('modal-report').classList.add('open');
+  showToast('📄','Report Generated',`${ref} · Logged to maintenance`,true);
+}
+
+/* ══════════════════════════════════════
+   UTILITIES
+══════════════════════════════════════ */
+function sanitize(str){ if(!str) return ''; return str.replace(/<|>|"|'|;|--|\*\//g,'').trim(); }
+
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+
+function showToast(icon, title, sub, success){
+  const tc=document.getElementById('toast-container');
+  const t=document.createElement('div');
+  t.className='toast';
+  t.innerHTML=`<span class="t-icon">${icon}</span><div><div class="t-text">${title}</div>${sub?`<div class="t-sub">${sub}</div>`:''}</div>`;
+  tc.appendChild(t);
+  setTimeout(()=>t.style.opacity='0',3200);
+  setTimeout(()=>t.remove(),3600);
+}
+
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
+(function init(){
+  initCalendar();
+  renderManifest();
+  updatePassBadge();
+  // Set inspection date default
+  document.getElementById('insp-date').value=new Date().toISOString().split('T')[0];
+})();
+</script>
+</body>
+</html>
