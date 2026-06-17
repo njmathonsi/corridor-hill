@@ -81,6 +81,49 @@ export function IntakeView() {
         <span className="badge badge-emerald">● Standard Tier</span>
       </div>
 
+      {/* Real building photo banner */}
+      <div style={{
+        width: "100%",
+        borderRadius: "var(--r-lg)",
+        overflow: "hidden",
+        position: "relative",
+        aspectRatio: "16/5",
+        marginBottom: 16,
+        background: "var(--bg-raised)",
+        border: "1px solid var(--border-dim)",
+      }}>
+        <img
+          src="/images/corridor-walkway.jpg"
+          alt="Corridor Hill — covered walkway connecting student accommodation blocks"
+          style={{
+            width: "100%", height: "100%",
+            objectFit: "cover", objectPosition: "center",
+            display: "block",
+            filter: "brightness(0.82) saturate(1.05)",
+          }}
+        />
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "linear-gradient(to top, rgba(7,7,10,0.7) 0%, transparent 55%)",
+          pointerEvents: "none",
+        }} />
+        <div style={{
+          position: "absolute", bottom: 10, left: 14, right: 14,
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+        }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.85)", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+            Corridor Hill — Block Overview
+          </span>
+          <span style={{
+            fontSize: 9, fontWeight: 700, padding: "2px 7px", borderRadius: 3,
+            background: "rgba(16,185,129,0.25)", color: "var(--emerald)",
+            border: "1px solid var(--emerald-ring)", letterSpacing: "0.08em", textTransform: "uppercase",
+          }}>
+            Live Layout
+          </span>
+        </div>
+      </div>
+
       <div className="intake-layout">
         {/* LEFT — Student Profile */}
         <div>
