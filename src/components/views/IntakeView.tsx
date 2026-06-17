@@ -35,8 +35,6 @@ export function IntakeView() {
     state.studentId.length === 13 &&
     state.block && state.unit && state.room;
 
-  const clean = (v: string) => sanitize(v);
-
   const handleConfirm = useCallback(async () => {
     if (!confirmReady || submitting) return;
     setSubmitting(true);
@@ -47,8 +45,8 @@ export function IntakeView() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ref,
-          studentName: clean(state.studentName),
-          studentNum: clean(state.studentNum),
+          studentName: sanitize(state.studentName),
+          studentNum: sanitize(state.studentNum),
           saIdMasked: maskSAID(state.studentId),
           funding: state.funding,
           block: state.block,
@@ -56,17 +54,11 @@ export function IntakeView() {
           room: state.room,
         }),
       });
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error ?? "Unknown error");
-      }
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? `Server error ${res.status}`);
       setModalRef(ref);
       setModalOpen(true);
-      showToast(
-        "✅",
-        "Allocation Confirmed",
-        `${clean(state.studentName)} → ${state.block}${state.unit} Room ${state.room}`
-      );
+      showToast("✅", "Allocation Confirmed", `${state.studentName} → Block ${state.block} ${state.unit} Room ${state.room}`);
     } catch (e: unknown) {
       showToast("⚠️", "Save failed", e instanceof Error ? e.message : "Please try again");
     } finally {
@@ -106,9 +98,7 @@ export function IntakeView() {
                 className="input-field"
                 placeholder="e.g. Sipho Dlamini"
                 value={state.studentName}
-                onChange={(e) =>
-                  setState((s) => ({ ...s, studentName: sanitize(e.target.value) }))
-                }
+                onChange={(e) => setState((s) => ({ ...s, studentName: e.target.value }))}
               />
             </div>
             <div className="input-group">
@@ -118,9 +108,7 @@ export function IntakeView() {
                 placeholder="e.g. STU2024001234"
                 maxLength={16}
                 value={state.studentNum}
-                onChange={(e) =>
-                  setState((s) => ({ ...s, studentNum: sanitize(e.target.value) }))
-                }
+                onChange={(e) => setState((s) => ({ ...s, studentNum: e.target.value }))}
               />
             </div>
             <div className="input-group">
@@ -193,9 +181,7 @@ export function IntakeView() {
                     <div
                       key={u}
                       className={`unit-card${state.unit === u ? " selected" : ""}`}
-                      onClick={() =>
-                        setState((s) => ({ ...s, unit: u, room: null }))
-                      }
+                      onClick={() => setState((s) => ({ ...s, unit: u, room: null }))}
                     >
                       <div className="uc-label">{state.block}{u}</div>
                       <div className="uc-sub">3 rooms</div>
@@ -221,10 +207,7 @@ export function IntakeView() {
                         <div
                           key={r}
                           className={`cluster-room ${isSelected ? "selected" : roomState}`}
-                          onClick={() =>
-                            roomState !== "occupied" &&
-                            setState((s) => ({ ...s, room: r }))
-                          }
+                          onClick={() => roomState !== "occupied" && setState((s) => ({ ...s, room: r }))}
                         >
                           <div className="cr-letter">R{r}</div>
                           <div className="cr-label">Room {r}</div>
@@ -254,9 +237,7 @@ export function IntakeView() {
                   <span className="summary-arrow">›</span>
                   <span className="summary-crumb">{state.block}{state.unit}</span>
                   <span className="summary-arrow">›</span>
-                  <span className="summary-crumb" style={{ color: "var(--blue)", borderColor: "var(--blue-ring)" }}>
-                    Room {state.room}
-                  </span>
+                  <span className="summary-crumb" style={{ color: "var(--blue)", borderColor: "var(--blue-ring)" }}>Room {state.room}</span>
                 </>
               ) : state.block ? (
                 <>
