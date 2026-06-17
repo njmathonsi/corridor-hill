@@ -219,10 +219,23 @@ export function InspectionView() {
                     onChange={(e) => setField("deduction", e.target.value)} />
                 </div>
                 <div style={{ marginBottom: 8 }}>
-                  <label className="input-label" style={{ marginBottom: 8 }}>Photo Evidence Placeholders</label>
+                  <label className="input-label" style={{ marginBottom: 8 }}>Photo Evidence</label>
                   <div className="photo-strip">
-                    {[0,1,2].map((i) => <div key={i} className="photo-placeholder" title="Tap to attach photo">📷</div>)}
-                    <div className="photo-placeholder" title="Add more" style={{ borderStyle: "solid", borderColor: "var(--blue-ring)", color: "var(--blue)" }}>+</div>
+                    {[
+                      { src: "/images/corridor-walkway.jpg", label: "Walkway" },
+                      { src: "/images/corridor-sunset.webp", label: "Block View" },
+                      { src: "/images/corridor-exterior.webp", label: "Exterior" },
+                    ].map((p) => (
+                      <div key={p.label} style={{
+                        width: 90, height: 90, borderRadius: "var(--r-md)",
+                        overflow: "hidden", position: "relative",
+                        border: "1.5px solid var(--border-mid)", flexShrink: 0,
+                      }}>
+                        <img src={p.src} alt={p.label} style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.88)" }} />
+                        <div style={{ position: "absolute", bottom: 3, left: 0, right: 0, textAlign: "center", fontSize: 8, fontWeight: 700, color: "rgba(255,255,255,0.7)", letterSpacing: "0.06em", textTransform: "uppercase" }}>{p.label}</div>
+                      </div>
+                    ))}
+                    <div className="photo-placeholder" title="Add photo" style={{ borderStyle: "solid", borderColor: "var(--blue-ring)", color: "var(--blue)" }}>+</div>
                   </div>
                 </div>
                 <div className="input-group">
